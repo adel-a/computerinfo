@@ -1,0 +1,27 @@
+<html lang='en'>
+<head>
+<title>Computer Information</title>
+<HTA:APPLICATION APPLICATIONNAME="CompInfo"/>
+<script language="vbscript">
+Set wsh=CreateObject("WScript.Shell")
+compname=wsh.ExpandEnvironmentStrings("%computername%")
+Set wmgmt=GetObject("winmgmts:{impersonationLevel=impersonate}!\\"&compname&"\root\cimv2")
+Set printers=wmgmt.ExecQuery("select * from win32_printer")
+sharePath="\\localhost"
+col=""
+Set shares=wmgmt.ExecQuery("select * from win32_share where type=0")
+For Each p  in printers
+    col= col&p.Name&" = "&p.Location&vbCrLf 
+Next
+    path=""
+For Each s in shares
+     path=path&s.Name&"="&"="&s.Type&"="&s.Path&vbCrLf
+Next
+MsgBox path
+</script>
+
+</head>
+<body>
+
+</body>
+</html>
